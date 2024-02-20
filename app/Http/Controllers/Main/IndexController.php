@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Main;
 
 use App\Http\Controllers\Controller;
 
-class AdminController extends Controller
+class IndexController extends Controller
 {
     public function __invoke()
     {
