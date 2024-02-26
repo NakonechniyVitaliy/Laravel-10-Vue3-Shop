@@ -65,7 +65,7 @@
                                         </td>
                                         <td>{{ $product->count }}</td>
                                         <td>{{ $product->is_published }}</td>
-                                        <td>{{ $product->category->title }}</td>
+{{--                                        <td>{{ $product->category->title }}</td>--}}
                                         <td><a href="{{ route('product.show', $product->id) }}"><i class="fas fa-eye color" style="color: #0c84ff"></i></a></td>
                                         <td><a href="{{ route('product.edit', $product->id) }}"><i class="fas fa-edit" style="color: limegreen"></i></a></td>
                                         <td>

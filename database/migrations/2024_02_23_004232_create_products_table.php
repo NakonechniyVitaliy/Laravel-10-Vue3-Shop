@@ -22,7 +22,7 @@ return new class extends Migration
             $table->integer('count');
             $table->boolean('is_published');
 
-            $table->integer('category_id');
+            $table->integer('category_id')->nullable();
             $table->index('category_id', 'product_category_idx');
             $table->foreign('category_id', 'product_category_fk')->on('categories')->references('id');
 
@@ -35,6 +35,5 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('products');
     }
 };
