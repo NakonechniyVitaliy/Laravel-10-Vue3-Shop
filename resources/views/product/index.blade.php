@@ -34,8 +34,6 @@
                                 <tr>
                                     <th>ID</th>
                                     <th>Title</th>
-                                    <th>Description</th>
-                                    <th>Content</th>
                                     <th>Price</th>
                                     <th>Colors</th>
                                     <th>Tags</th>
@@ -50,12 +48,10 @@
                                     <tr>
                                         <td>{{ $product->id }}</td>
                                         <td>{{ $product->title }}</td>
-                                        <td>{{ $product->description }}</td>
-                                        <td>{{ $product->content }}</td>
                                         <td>{{ $product->price }}</td>
                                         <td>
                                             @foreach($product->colors as $color)
-                                                <i class="fas fa-square-full ml-2" style="color: {{'#' . $color->title }}"></i>
+                                                <i class="fas fa-square-full ml-2" style="color: {{'#' . $color->title }};border:2px solid black;box-sizing:border-box;"></i>
                                             @endforeach
                                         </td>
                                         <td>
@@ -64,8 +60,8 @@
                                             @endforeach
                                         </td>
                                         <td>{{ $product->count }}</td>
-                                        <td>{{ $product->is_published }}</td>
-{{--                                        <td>{{ $product->category->title }}</td>--}}
+                                        <td>{{$product->is_publish == '1' ? 'No' : 'Yes'}}</td>
+                                        <td>{{ $product->category->title }}</td>
                                         <td><a href="{{ route('product.show', $product->id) }}"><i class="fas fa-eye color" style="color: #0c84ff"></i></a></td>
                                         <td><a href="{{ route('product.edit', $product->id) }}"><i class="fas fa-edit" style="color: limegreen"></i></a></td>
                                         <td>
