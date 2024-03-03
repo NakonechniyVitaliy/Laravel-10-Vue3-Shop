@@ -9,7 +9,7 @@ use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class ProductsResource extends JsonResource
+class IndexProductsResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -30,8 +30,6 @@ class ProductsResource extends JsonResource
             'count' =>$this->count,
             'is_published' =>$this->is_published,
             'category'=>new CategoryResource($this->category),
-            'group_products'=>ProductsMinResource::collection($products),
-            'product_images'=>ProductsImagesResource::collection($this->productImages)
         ];
     }
 }

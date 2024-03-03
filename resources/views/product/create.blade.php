@@ -47,6 +47,39 @@
                             </div>
                         </div>
                         <div class="form-group">
+                            <div class="input-group">
+                                <div class="custom-file">
+                                    <input name="products_images[]" type="file" class="custom-file-input" id="exampleInputFile">
+                                    <label class="custom-file-label" for="exampleInputFile">Product image 1</label>
+                                </div>
+                                <div class="input-group-append">
+                                    <span class="input-group-text">Upload</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="input-group">
+                                <div class="custom-file">
+                                    <input name="products_images[]" type="file" class="custom-file-input" id="exampleInputFile">
+                                    <label class="custom-file-label" for="exampleInputFile">Product image 2</label>
+                                </div>
+                                <div class="input-group-append">
+                                    <span class="input-group-text">Upload</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="input-group">
+                                <div class="custom-file">
+                                    <input name="products_images[]" type="file" class="custom-file-input" id="exampleInputFile">
+                                    <label class="custom-file-label" for="exampleInputFile">Product image 3</label>
+                                </div>
+                                <div class="input-group-append">
+                                    <span class="input-group-text">Upload</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
                             <input type="number" class="form-control" name="price" placeholder="Price">
                         </div>
                         <div class="form-group">
@@ -56,7 +89,7 @@
                             <div class="form-group">
                                 <select class="tags" name='tag_ids[]' multiple="multiple" data-placeholder="Select tags" style="width: 100%;">
                                     @foreach($tags as $tag)
-                                        <option value="{{ $tag->id }}">{{ $tag->title }}</option>
+                                        <option value="{{ $tag->id }}">{{ $tag->title }} </option>
                                     @endforeach
                                 </select>
                             </div>
@@ -65,7 +98,9 @@
                             <div class="form-group">
                                 <select class="colors" name='color_ids[]' multiple="multiple" data-placeholder="Select colors" style="width: 100%;">
                                     @foreach($colors as $color)
-                                        <option value="{{ $color->id }}">{{ $color->title }}</option>
+                                        <option value="{{ $color->id }}">
+                                                {{ $color->description }}
+                                        </option>
                                     @endforeach
                                 </select>
                             </div>
@@ -78,6 +113,14 @@
                                 <option disabled selected>Category</option>
                                 @foreach($categories as $category)
                                     <option value="{{$category->id}}">{{$category->title}}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <select class="custom-select rounded-0" name="group_id">
+                                <option disabled selected>Group</option>
+                                @foreach($groups as $group)
+                                    <option value="{{$group->id}}">{{$group->title}}</option>
                                 @endforeach
                             </select>
                         </div>
