@@ -1,11 +1,10 @@
 <?php
 
-namespace App\Http\Controllers\API;
+namespace App\Http\Controllers\API\Product;
 
 use App\Http\Controllers\Controller;
 use App\Http\Resources\Products\ProductsResource;
 use App\Models\Product;
-use Illuminate\Http\Request;
 
 class ShowController extends Controller
 {

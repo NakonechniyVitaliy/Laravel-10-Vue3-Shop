@@ -1,13 +1,12 @@
 <?php
 
-namespace App\Http\Controllers\API;
+namespace App\Http\Controllers\API\Product;
 
 use App\Http\Controllers\Controller;
 use App\Http\Filters\ProductFilter;
 use App\Http\Requests\API\Product\IndexRequest;
 use App\Http\Resources\Products\IndexProductsResource;
 use App\Models\Product;
-use Illuminate\Http\Request;
 
 class IndexController extends Controller
 {

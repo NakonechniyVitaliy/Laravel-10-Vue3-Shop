@@ -1,16 +1,12 @@
 <?php
 
-namespace App\Http\Controllers\API;
+namespace App\Http\Controllers\API\Product;
 
 use App\Http\Controllers\Controller;
-use App\Http\Resources\Category\CategoryResource;
-use App\Http\Resources\Color\ColorResource;
-use App\Http\Resources\Products\IndexProductsResource;
 use App\Models\Category;
 use App\Models\Color;
 use App\Models\Product;
 use App\Models\Tag;
-use Illuminate\Http\Request;
 
 class FilterListController extends Controller
 {

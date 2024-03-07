@@ -10,42 +10,60 @@ export default {
     return {
       products:[],
       totalPrice: '',
+      name: '',
+      email: '',
+      address: '',
     }
   },
 
   methods: {
-    getCartProducts(){
-      this.products = JSON.parse(localStorage.getItem('cart'))
-      console.log(this.products)
-    },
-    minusQty(product){
-      if (product.qty === 1) return
-      product.qty --
-      this.updateCart()
-    },
-    plusQty(product){
-      product.qty ++
-      this.updateCart()
-    },
-    deleteProduct(id){
-      this.products = this.products.filter(product => {
-        return product.id !== id
-      })
-      this.updateCart()
-    },
-    updateCart(){
-      localStorage.setItem('cart', JSON.stringify(this.products))
-      this.getTotalPrice()
-    },
+      order() {
+          this.axios.post('http://127.0.0.1:8000/api/orders', {
+              'name': this.name,
+              'email': this.email,
+              'total_price': this.totalPrice,
+              'products': this.products,
+              'address': this.address,
+          })
+              .then(res => {
+                  console.log(res)
+              })
+              .finally(v => {
+                  $(document).trigger('changed')
+              })
+      },
 
-    getTotalPrice(){
-      this.totalPrice = 0
-      this.products.forEach((value, index) => {
-        this.totalPrice = Number(this.totalPrice) +  Number(value.price*value.qty);
-      });
-    },
-  },
+      getCartProducts() {
+          this.products = JSON.parse(localStorage.getItem('cart'))
+          console.log(this.products)
+      },
+      minusQty(product) {
+          if (product.qty === 1) return
+          product.qty--
+          this.updateCart()
+      },
+      plusQty(product) {
+          product.qty++
+          this.updateCart()
+      },
+      deleteProduct(id) {
+          this.products = this.products.filter(product => {
+              return product.id !== id
+          })
+          this.updateCart()
+      },
+      updateCart() {
+          localStorage.setItem('cart', JSON.stringify(this.products))
+          this.getTotalPrice()
+      },
 
+      getTotalPrice() {
+          this.totalPrice = 0
+          this.products.forEach((value, index) => {
+              this.totalPrice = Number(this.totalPrice) + Number(value.price * value.qty);
+          });
+      },
+  }
 }
 </script>
 
@@ -220,6 +238,22 @@ export default {
                     </div>
                   </li>
                 </ul>
+                  <div class="apply-coupon wow fadeInUp animated">
+                      <div class="apply-coupon-input-box mt-30 ">
+                          <input v-model="name" type="text" name="name" value="" placeholder="Name">
+                      </div>
+                      <div class="apply-coupon-input-box mt-30 ">
+                          <input v-model="email" type="email" name="email" value="" placeholder="Email">
+                      </div>
+                      <div class="apply-coupon-input-box mt-30 ">
+                          <input v-model="address" type="text" name="address" value="" placeholder="Address">
+                      </div>
+                      <div class="apply-coupon-button mt-30">
+                          <button @click.prevent="order()"  class="btn--primary style2" type="submit">
+                              Сheckout
+                          </button>
+                      </div>
+                  </div>
               </div>
             </div>
           </div>
