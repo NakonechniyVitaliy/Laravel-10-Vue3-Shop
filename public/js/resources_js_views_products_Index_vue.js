@@ -13,7 +13,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   mounted: function mounted() {
-    // $(document).trigger('changed');
+    $(document).trigger('changed');
     this.getFilterList();
     this.getFilteredProductList();
     this.addColor();
@@ -56,6 +56,7 @@ __webpack_require__.r(__webpack_exports__);
         });
         Array.prototype.push.apply(cart, newProduct);
         localStorage.setItem('cart', JSON.stringify(cart));
+        this.$store.dispatch('getCartProducts');
       }
     },
     onChange: function onChange() {
