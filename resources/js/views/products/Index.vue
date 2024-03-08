@@ -1,7 +1,7 @@
 <script>
 export default {
   mounted() {
-    // $(document).trigger('changed');
+    $(document).trigger('changed');
     this.getFilterList();
     this.getFilteredProductList();
     this.addColor();
@@ -49,6 +49,7 @@ export default {
           })
           Array.prototype.push.apply(cart, newProduct)
           localStorage.setItem('cart', JSON.stringify(cart))
+          this.$store.dispatch('getCartProducts');
         }
       },
 

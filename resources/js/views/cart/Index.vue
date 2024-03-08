@@ -1,14 +1,22 @@
 <script>
 export default {
+    created() {
+        this.$store.dispatch('getCartProducts');
+    },
+    computed: {
+        products() {
+            return this.$store.getters.products;
+        }
+    },
+
+
   mounted() {
     $(document).trigger('changed')
-    this.getCartProducts()
     this.getTotalPrice()
   },
 
   data() {
     return {
-      products:[],
       totalPrice: '',
       name: '',
       email: '',
@@ -33,10 +41,6 @@ export default {
               })
       },
 
-      getCartProducts() {
-          this.products = JSON.parse(localStorage.getItem('cart'))
-          console.log(this.products)
-      },
       minusQty(product) {
           if (product.qty === 1) return
           product.qty--
@@ -46,12 +50,13 @@ export default {
           product.qty++
           this.updateCart()
       },
+
       deleteProduct(id) {
-          this.products = this.products.filter(product => {
-              return product.id !== id
-          })
-          this.updateCart()
+          this.$store.commit('deleteProduct', id);
+          this.updateCart();
       },
+
+
       updateCart() {
           localStorage.setItem('cart', JSON.stringify(this.products))
           this.getTotalPrice()
