@@ -9,11 +9,10 @@ use App\Models\Group;
 use App\Models\Tag;
 use Illuminate\Http\Request;
 
-class CreateController extends Controller
+class CreateController extends BaseController
 {
     public function __invoke()
     {
-
         $tags = Tag::all();
         $colors = Color::all();
         $categories = Category::all();
