@@ -8,20 +8,11 @@ use App\Models\Color;
 use App\Models\Product;
 use App\Models\Tag;
 
-class FilterListController extends Controller
+class FilterListController extends BaseController
 {
     public function __invoke()
     {
-        $result = [
-            'categories' => Category::all(),
-            'colors' => Color::all(),
-            'tags' => Tag::all(),
-            'price' => [
-                'min' => Product::min('price'),
-                'max' => Product::max('price'),
-                ],
-            ];
-
+        $result = $this->service->filter();
         return response()->json($result);
     }
 }
