@@ -1,23 +1,15 @@
 <script>
+import { mapGetters} from "vuex";
 export default {
     created() {
         this.$store.dispatch('getCartProducts');
     },
     computed: {
-        products() {
-            return this.$store.getters.products;
-        }
+        ...mapGetters(['total_price', 'cart_products', 'products_count'])
     },
 
     mounted() {
         $(document).trigger('changed');
-        this.getTotalPrice();
-    },
-
-    data() {
-        return {
-          totalPrice: '',
-        }
     },
 
     methods: {
@@ -26,17 +18,8 @@ export default {
             this.updateCart();
         },
 
-        getTotalPrice() {
-            if (this.products !== null){
-                this.totalPrice = 0
-                this.products.forEach((value, index) => {
-                this.totalPrice = Number(this.totalPrice) + Number(value.price * value.qty);
-                });
-                }
-        },
         updateCart() {
-            localStorage.setItem('cart', JSON.stringify(this.products))
-            this.getTotalPrice()
+            localStorage.setItem('cart', JSON.stringify(this.cart_products))
         },
     },
 }
@@ -134,7 +117,7 @@ export default {
                                 class="count">(2)</span> </a> </li>
                             <li class="cartm"> <a href="#0" class="number cart-icon"> <i
                                 class="flaticon-shopping-cart"></i><span
-                                class="count">(5)</span> </a> </li>
+                                class="count">({{products_count}})</span> </a> </li>
                           </ul>
                         </div>
                       </div>
@@ -191,10 +174,10 @@ export default {
       <div class="side-cart d-flex flex-column justify-content-between">
         <div class="top">
           <div class="content d-flex justify-content-between align-items-center">
-            <h6 class="text-uppercase">Your Cart ({{  }})</h6> <span class="cart-close text-uppercase">X</span>
+            <h6 class="text-uppercase">Your Cart ( {{products_count}} )</h6> <span class="cart-close text-uppercase">X</span>
           </div>
           <div class="cart_items">
-            <div v-for="product in products" class="items d-flex justify-content-between align-items-center">
+            <div v-for="product in cart_products" class="items d-flex justify-content-between align-items-center">
               <div class="left d-flex align-items-center">
                   <a href="shop-details-1.html" class="thumb d-flex justify-content-between align-items-center">
                       <img :src="product.image_url" alt=""> </a>
@@ -213,7 +196,7 @@ export default {
         <div class="bottom">
           <div class="total-ammount d-flex justify-content-between align-items-center">
             <h6 class="text-uppercase">Total:</h6>
-            <h6 class="ammount text-uppercase">${{ totalPrice }}</h6>
+            <h6 class="ammount text-uppercase">${{ total_price }}</h6>
           </div>
           <div class="button-box d-flex justify-content-between">
             <router-link class="btn_black" to="/cart"> View Cart</router-link>

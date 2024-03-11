@@ -1,36 +1,32 @@
 <script>
+import {mapGetters} from "vuex";
+import {mapMutations} from "vuex";
+
 export default {
     created() {
         this.$store.dispatch('getCartProducts');
     },
     computed: {
-        products() {
-            return this.$store.getters.products;
-        }
+        ...mapGetters(['total_price', 'cart_products'])
     },
-
-
   mounted() {
     $(document).trigger('changed')
-    this.getTotalPrice()
   },
 
   data() {
     return {
-      totalPrice: '',
       name: '',
       email: '',
       address: '',
     }
   },
-
   methods: {
       order() {
           this.axios.post('http://127.0.0.1:8000/api/orders', {
               'name': this.name,
               'email': this.email,
-              'total_price': this.totalPrice,
-              'products': this.products,
+              'total_price': this.total_price,
+              'products': this.cart_products,
               'address': this.address,
           })
               .then(res => {
@@ -40,7 +36,6 @@ export default {
                   $(document).trigger('changed')
               })
       },
-
       minusQty(product) {
           if (product.qty === 1) return
           product.qty--
@@ -50,23 +45,12 @@ export default {
           product.qty++
           this.updateCart()
       },
-
       deleteProduct(id) {
           this.$store.commit('deleteProduct', id);
           this.updateCart();
       },
-
-
       updateCart() {
-          localStorage.setItem('cart', JSON.stringify(this.products))
-          this.getTotalPrice()
-      },
-
-      getTotalPrice() {
-          this.totalPrice = 0
-          this.products.forEach((value, index) => {
-              this.totalPrice = Number(this.totalPrice) + Number(value.price * value.qty);
-          });
+          localStorage.setItem('cart', JSON.stringify(this.cart_products))
       },
   }
 }
@@ -113,7 +97,7 @@ export default {
                     </tr>
                     </thead>
                     <tbody>
-                    <tr v-for="product in products">
+                    <tr v-for="product in cart_products">
                       <td>
                         <div class="thumb-box"> <a href="shop-details-1.html" class="thumb">
                           <img :src="product.image_url" alt="">
