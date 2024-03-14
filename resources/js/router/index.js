@@ -23,6 +23,16 @@ const router = createRouter({
       name: 'cart.index',
       component: () => import('../views/cart/Index.vue')
     },
+    {
+      path: '/user/register',
+      name: 'user.register',
+      component: () => import('../views/user/Register.vue')
+    },
+    {
+      path: '/user/login',
+      name: 'user.login',
+      component: () => import('../views/user/Login.vue')
+    },
   ]
 })
 

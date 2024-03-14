@@ -1,15 +1,27 @@
 <script>
+import api from "./api.js";
 import { mapGetters} from "vuex";
+import router from "./router/index.js";
 export default {
+    data(){
+        return{
+            access_token:null,
+        }
+    },
+    updated() {
+        this.getAccessToken()
+    },
+
     created() {
         this.$store.dispatch('getCartProducts');
     },
     computed: {
-        ...mapGetters(['total_price', 'cart_products', 'products_count'])
+        ...mapGetters(['total_price', 'cart_products', 'products_count']),
     },
 
     mounted() {
         $(document).trigger('changed');
+        this.getAccessToken();
     },
 
     methods: {
@@ -21,6 +33,18 @@ export default {
         updateCart() {
             localStorage.setItem('cart', JSON.stringify(this.cart_products))
         },
+
+        getAccessToken(){
+            this.access_token = localStorage.getItem('access_token')
+        },
+
+        logout(){
+            api.post('/api/auth/logout')
+                .then(res => {
+                    localStorage.removeItem('access_token')
+                    this.$router.push({name: 'user.login'})
+                })
+        }
     },
 }
 </script>
@@ -80,6 +104,12 @@ export default {
                     <div class="some-info">
                       <p class="d-flex align-items-center"> <span class="icon"> <i
                           class="flaticon-power"></i> </span> Welcome to Karte Online Shop</p>
+                        <p >
+                            Авторизирован
+                        </p>
+                        <p >
+                            НЕ Авторизирован
+                        </p>
                       <div class="right d-flex align-items-center ">
                         <div class="language currency"> <select>
                           <option>USD</option>
@@ -90,7 +120,11 @@ export default {
                           <option>ENGLISH </option>
                           <option value="1">GERMAN</option>
                           <option value="4">FRENCH</option>
-                        </select> </div> <a href="login.html"> Sign In / Register </a>
+                        </select>
+                        </div>
+                          <router-link v-if="!access_token" to="/user/register"> Register/</router-link>
+                          <router-link v-if="!access_token" to="/user/login"> Login </router-link>
+                          <a @click.prevent='logout()' v-if="access_token" href="#"> Logout </a>
                       </div>
                     </div>
                   </div>
@@ -266,7 +300,7 @@ export default {
 
     </header>
 
-    <router-view></router-view>
+    <router-view :key="$route.fullPath"></router-view>
 
     <!--  Footer Three start -->
     <footer class="footer-default footer-3 ">

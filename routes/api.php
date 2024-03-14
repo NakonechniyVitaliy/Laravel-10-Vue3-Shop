@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\API\User\StoreController;
+use App\Http\Controllers\AuthController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -22,3 +24,14 @@ Route::post('/products', \App\Http\Controllers\API\Product\IndexController::clas
 Route::post('/orders', \App\Http\Controllers\API\Order\StoreController::class);
 Route::get('/products/filters', \App\Http\Controllers\API\Product\FilterListController::class);
 Route::get('/products/{product}', \App\Http\Controllers\API\Product\ShowController::class);
+
+Route::group(['namespace' => 'API/User', 'prefix' => 'users'], function (){
+    Route::post('/', [StoreController::class, '__invoke']);
+});
+
+Route::group(['middleware' => 'api', 'prefix' => 'auth'], function ($router) {
+    Route::post('login', [AuthController::class, 'login']);
+    Route::post('logout', [AuthController::class, 'logout']);
+    Route::post('refresh', [AuthController::class,'refresh']);
+    Route::post('me', [AuthController::class, 'me']);
+});
