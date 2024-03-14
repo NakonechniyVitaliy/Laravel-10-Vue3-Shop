@@ -1,23 +1,27 @@
 <script>
+import api from "./api.js";
+import { mapGetters} from "vuex";
+import router from "./router/index.js";
 export default {
+    data(){
+        return{
+            access_token:null,
+        }
+    },
+    updated() {
+        this.getAccessToken()
+    },
+
     created() {
         this.$store.dispatch('getCartProducts');
     },
     computed: {
-        products() {
-            return this.$store.getters.products;
-        }
+        ...mapGetters(['total_price', 'cart_products', 'products_count']),
     },
 
     mounted() {
         $(document).trigger('changed');
-        this.getTotalPrice();
-    },
-
-    data() {
-        return {
-          totalPrice: '',
-        }
+        this.getAccessToken();
     },
 
     methods: {
@@ -26,18 +30,21 @@ export default {
             this.updateCart();
         },
 
-        getTotalPrice() {
-            if (this.products !== null){
-                this.totalPrice = 0
-                this.products.forEach((value, index) => {
-                this.totalPrice = Number(this.totalPrice) + Number(value.price * value.qty);
-                });
-                }
-        },
         updateCart() {
-            localStorage.setItem('cart', JSON.stringify(this.products))
-            this.getTotalPrice()
+            localStorage.setItem('cart', JSON.stringify(this.cart_products))
         },
+
+        getAccessToken(){
+            this.access_token = localStorage.getItem('access_token')
+        },
+
+        logout(){
+            api.post('/api/auth/logout')
+                .then(res => {
+                    localStorage.removeItem('access_token')
+                    this.$router.push({name: 'user.login'})
+                })
+        }
     },
 }
 </script>
@@ -97,6 +104,12 @@ export default {
                     <div class="some-info">
                       <p class="d-flex align-items-center"> <span class="icon"> <i
                           class="flaticon-power"></i> </span> Welcome to Karte Online Shop</p>
+                        <p >
+                            Авторизирован
+                        </p>
+                        <p >
+                            НЕ Авторизирован
+                        </p>
                       <div class="right d-flex align-items-center ">
                         <div class="language currency"> <select>
                           <option>USD</option>
@@ -107,7 +120,11 @@ export default {
                           <option>ENGLISH </option>
                           <option value="1">GERMAN</option>
                           <option value="4">FRENCH</option>
-                        </select> </div> <a href="login.html"> Sign In / Register </a>
+                        </select>
+                        </div>
+                          <router-link v-if="!access_token" to="/user/register"> Register/</router-link>
+                          <router-link v-if="!access_token" to="/user/login"> Login </router-link>
+                          <a @click.prevent='logout()' v-if="access_token" href="#"> Logout </a>
                       </div>
                     </div>
                   </div>
@@ -134,7 +151,7 @@ export default {
                                 class="count">(2)</span> </a> </li>
                             <li class="cartm"> <a href="#0" class="number cart-icon"> <i
                                 class="flaticon-shopping-cart"></i><span
-                                class="count">(5)</span> </a> </li>
+                                class="count">({{products_count}})</span> </a> </li>
                           </ul>
                         </div>
                       </div>
@@ -191,10 +208,10 @@ export default {
       <div class="side-cart d-flex flex-column justify-content-between">
         <div class="top">
           <div class="content d-flex justify-content-between align-items-center">
-            <h6 class="text-uppercase">Your Cart ({{  }})</h6> <span class="cart-close text-uppercase">X</span>
+            <h6 class="text-uppercase">Your Cart ( {{products_count}} )</h6> <span class="cart-close text-uppercase">X</span>
           </div>
           <div class="cart_items">
-            <div v-for="product in products" class="items d-flex justify-content-between align-items-center">
+            <div v-for="product in cart_products" class="items d-flex justify-content-between align-items-center">
               <div class="left d-flex align-items-center">
                   <a href="shop-details-1.html" class="thumb d-flex justify-content-between align-items-center">
                       <img :src="product.image_url" alt=""> </a>
@@ -213,7 +230,7 @@ export default {
         <div class="bottom">
           <div class="total-ammount d-flex justify-content-between align-items-center">
             <h6 class="text-uppercase">Total:</h6>
-            <h6 class="ammount text-uppercase">${{ totalPrice }}</h6>
+            <h6 class="ammount text-uppercase">${{ total_price }}</h6>
           </div>
           <div class="button-box d-flex justify-content-between">
             <router-link class="btn_black" to="/cart"> View Cart</router-link>
@@ -283,7 +300,7 @@ export default {
 
     </header>
 
-    <router-view></router-view>
+    <router-view :key="$route.fullPath"></router-view>
 
     <!--  Footer Three start -->
     <footer class="footer-default footer-3 ">

@@ -7,15 +7,15 @@ export default createStore({
     },
 
     state: {
-        // Ваше состояние
+
     },
     mutations: {
-        // Ваши мутации
+
     },
     actions: {
-        // Ваши действия
+
     },
     getters: {
-        // Ваши геттеры
+
     }
 });
