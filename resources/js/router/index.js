@@ -33,7 +33,29 @@ const router = createRouter({
       name: 'user.login',
       component: () => import('../views/user/Login.vue')
     },
+    {
+        path: '/:catchAll(.*)',
+      name: '404',
+      component: () => import('../views/error/Error404.vue')
+    },
   ]
 })
+
+router.beforeEach((to, from, next) => {
+    const access_token = localStorage.getItem('access_token')
+
+    if (!access_token) {
+        if (to.name === 'products.index' || to.name === 'products.show' && !access_token)
+            return next({
+                name: 'user.login'
+            })
+    }
+    next();
+})
+    // if (to.name === 'users.login' || to.name === 'users.registration' && access_token){
+    //     return next({
+    //         name: 'users.personal'
+    //     })
+    // }
 
 export default router

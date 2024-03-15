@@ -60,11 +60,11 @@
                             </div>
                             <form class="common-form">
                                 <div class="form-group">
-                                    <input type="text" class="form-control" v-model="email" placeholder="Your User Name (Or) Email Address">
+                                    <input type="text" autocomplete="current-email" class="form-control" v-model="email" placeholder="Your User Name (Or) Email Address">
                                 </div>
                                 <div class="form-group eye">
                                     <div class="icon icon-1"> <i class="flaticon-hidden"></i></div>
-                                    <input type="password" v-model="password" id="password-field" class="form-control" placeholder="Password">
+                                    <input type="password" v-model="password" autocomplete="current-password" class="form-control" placeholder="Password">
                                     <div class="icon icon-2 "><i class="flaticon-visibility"></i> </div>
                                 </div>
                                 <div class="checkk ">

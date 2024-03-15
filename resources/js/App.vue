@@ -6,10 +6,12 @@ export default {
     data(){
         return{
             access_token:null,
+            username: null,
         }
     },
     updated() {
-        this.getAccessToken()
+        this.getAccessToken();
+        this.getUsername();
     },
 
     created() {
@@ -22,6 +24,7 @@ export default {
     mounted() {
         $(document).trigger('changed');
         this.getAccessToken();
+        this.getUsername();
     },
 
     methods: {
@@ -44,6 +47,15 @@ export default {
                     localStorage.removeItem('access_token')
                     this.$router.push({name: 'user.login'})
                 })
+        },
+        getUsername(){
+            if(this.access_token){
+                this.axios.post('/api/auth/me', {
+                    token: this.access_token,
+                }).then(res => {
+                    this.username = res.data.name
+                })
+            }
         }
     },
 }
@@ -104,11 +116,11 @@ export default {
                     <div class="some-info">
                       <p class="d-flex align-items-center"> <span class="icon"> <i
                           class="flaticon-power"></i> </span> Welcome to Karte Online Shop</p>
-                        <p >
-                            Авторизирован
+                        <p v-if="username">
+                            Welcome, {{username}}!
                         </p>
-                        <p >
-                            НЕ Авторизирован
+                        <p v-else>
+                            Status - Guest
                         </p>
                       <div class="right d-flex align-items-center ">
                         <div class="language currency"> <select>

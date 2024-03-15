@@ -1,5 +1,5 @@
 <script>
-
+import api from "../../api.js";
 
 export default {
   mounted() {
@@ -98,15 +98,15 @@ export default {
     },
 
     getProducts(page = 1){
-      this.axios.post('http://127.0.0.1:8000/api/products', {
+      api.post('/api/auth/products', {
             'categories':this.categories,
             'colors':this.colors,
             'tags':this.tags,
             'price':this.price,
             'selectedFilter':this.selectedFilter,
             'page': page
-      })
-          .then(res => {
+      }).then(res => {
+          console.log(res)
             this.products = res.data.data
             this.pagination = res.data.meta
             console.log(res)
@@ -118,7 +118,7 @@ export default {
     },
 
     getProduct(id){
-      this.axios.get(`http://127.0.0.1:8000/api/products/${id}`)
+      api.get(`/api/auth/products/${id}`)
           .then(res => {
             this.popupProduct = res.data.data
             console.log(res);
@@ -128,8 +128,9 @@ export default {
           })
     },
     getFilterList(){
-      this.axios.get('http://127.0.0.1:8000/api/products/filters')
+      api.get('/api/auth/products/filters')
           .then(res => {
+              console.log(res)
             this.filterList = res.data
             console.log(this.filterList)
             //  Price Filter
@@ -386,27 +387,35 @@ export default {
                                       <div class="tabs">
                                         <div class="popup-product-thumb-box">
                                           <ul>
-                                            <li class="tab-nav popup-product-thumb" v-for="productImg in popupProduct.product_images">
+                                            <li v-if="popupProduct.product_images" class="tab-nav popup-product-thumb" v-for="productImg in popupProduct.product_images">
                                               <a :href="`#tabb${productImg.id}`">
                                                 <img :src="productImg.url" alt="" />
                                               </a>
                                             </li>
+                                            <li v-else>
+                                                <a :href="`#tabb${productImg.id}`">
+                                                    <img :src="productImg.url" alt="" />
+                                                </a>
+                                            </li>
                                           </ul>
                                         </div>
+
                                         <div class="popup-product-main-image-box">
-                                          <div v-for="productImg in popupProduct.product_images" :id="`tabb${productImg.id}`"
-                                               class="tab-item popup-product-image">
-                                            <div
-                                                class="popup-product-single-image">
-                                              <img :src="productImg.url"
-                                                   alt="" /> </div>
+                                          <div v-if="popupProduct.product_images > 0" v-for="productImg in popupProduct.product_images" :id="`tabb${productImg.id}`" class="tab-item popup-product-image">
+                                            <div class="popup-product-single-image">
+                                              <img :src="productImg.url" alt="" />
+                                            </div>
                                           </div>
-                                          <button class="prev"> <i
-                                              class="flaticon-back"></i>
-                                          </button> <button class="next"> <i
-                                            class="flaticon-next"></i>
-                                        </button>
+
+                                        <div v-else :id="`tabb${popupProduct.id}`" class="tab-item popup-product-image">
+                                            <div class="popup-product-single-image">
+                                                <img :src="popupProduct.image_url" alt="" />
+                                            </div>
                                         </div>
+                                          <button class="prev"> <i class="flaticon-back"></i></button>
+                                          <button class="next"> <i class="flaticon-next"></i></button>
+                                        </div>
+
                                       </div>
                                     </div>
                                   </div>

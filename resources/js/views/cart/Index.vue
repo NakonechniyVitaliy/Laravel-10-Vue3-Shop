@@ -223,7 +223,7 @@ export default {
                       <p>Total Price:</p>
                     </div>
                     <div class="right">
-                      <p>${{ totalPrice }}</p>
+                      <p>${{ total_price }}</p>
                     </div>
                   </li>
                 </ul>

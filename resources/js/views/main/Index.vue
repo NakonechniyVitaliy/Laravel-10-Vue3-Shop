@@ -50,7 +50,7 @@ export default {
         <div class="slide">
           <div class="contant-box position-relative">
 
-            <img class="bg-img hundread-vh" src="/assets/images/home-three/home-3-bg.jpg" alt="image">
+            <img class="bg-img hundread-vh" src="/assets/images/home-three/main_banner_1.jpg" alt="image">
 
             <div class="content-holder p-0 absolute-content">
               <div class="container  w-100 h-100">
@@ -80,7 +80,7 @@ export default {
           <div class="contant-box position-relative">
 
 
-            <img class="bg-img hundread-vh" src="/assets/images/home-three/home-3-bg-2.jpg" alt="image">
+            <img class="bg-img hundread-vh" src="/assets/images/home-three/main_banner_3.png" alt="image">
 
 
             <div class="content-holder p-0 absolute-content">
@@ -2454,12 +2454,12 @@ export default {
       </div>
     </div>
     <!--End Gallery Two-->
-
-
   </main>
 </div>
 </template>
 
-<style scoped>
-
+<style>
+h1.wow{
+    -webkit-text-stroke: 1px white;
+}
 </style>
