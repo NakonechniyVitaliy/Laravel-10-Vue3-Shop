@@ -1,6 +1,5 @@
 <script>
 import {mapGetters} from "vuex";
-import {mapMutations} from "vuex";
 
 export default {
     created() {
@@ -46,11 +45,10 @@ export default {
           this.updateCart()
       },
       deleteProduct(id) {
-          this.$store.commit('deleteProduct', id);
-          this.updateCart();
+          this.$store.dispatch('deleteProduct', id);
       },
       updateCart() {
-          localStorage.setItem('cart', JSON.stringify(this.cart_products))
+          this.$store.dispatch('updateCart');
       },
   }
 }

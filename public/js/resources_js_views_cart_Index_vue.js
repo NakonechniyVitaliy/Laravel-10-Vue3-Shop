@@ -19,7 +19,6 @@ function _defineProperty(obj, key, value) { key = _toPropertyKey(key); if (key i
 function _toPropertyKey(t) { var i = _toPrimitive(t, "string"); return "symbol" == _typeof(i) ? i : String(i); }
 function _toPrimitive(t, r) { if ("object" != _typeof(t) || !t) return t; var e = t[Symbol.toPrimitive]; if (void 0 !== e) { var i = e.call(t, r || "default"); if ("object" != _typeof(i)) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === r ? String : Number)(t); }
 
-
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   created: function created() {
     this.$store.dispatch('getCartProducts');
@@ -59,11 +58,10 @@ function _toPrimitive(t, r) { if ("object" != _typeof(t) || !t) return t; var e 
       this.updateCart();
     },
     deleteProduct: function deleteProduct(id) {
-      this.$store.commit('deleteProduct', id);
-      this.updateCart();
+      this.$store.dispatch('deleteProduct', id);
     },
     updateCart: function updateCart() {
-      localStorage.setItem('cart', JSON.stringify(this.cart_products));
+      this.$store.dispatch('updateCart');
     }
   }
 });

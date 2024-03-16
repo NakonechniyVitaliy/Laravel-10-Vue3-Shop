@@ -1,5 +1,6 @@
 <script>
 import api from "../../api.js";
+import cart from "../../store/modules/cart.js";
 
 export default {
   mounted() {
@@ -10,7 +11,8 @@ export default {
     this.addTag();
   },
 
-  data() {
+
+    data() {
     return {
       products: [],
       popupProduct: null,
@@ -25,6 +27,24 @@ export default {
   },
 
   methods: {
+      addToLike(product){
+        let liked = localStorage.getItem('liked')
+        let newLikedProduct = [{
+            'id': product.id,
+            'title': product.title,
+            'image_url': product.image_url,
+            'price': product.price,
+            }]
+          if (!liked){
+              localStorage.setItem('liked', JSON.stringify(newLikedProduct));
+          } else {
+              liked = JSON.parse(liked)
+              Array.prototype.push.apply(liked, newLikedProduct)
+              localStorage.setItem('liked', JSON.stringify(liked))
+          }
+          this.$store.dispatch('getLikedCount');
+      },
+
       addToCart(product, isSingle){
         let qty = isSingle ? 1 : $('.qtyValue').val()
         let cart = localStorage.getItem('cart')
@@ -364,9 +384,10 @@ export default {
                               </a>
                               <div class="products-grid__usefull-links">
                                 <ul>
-                                  <li><a href="wishlist.html"> <i class="flaticon-heart">
-                                  </i> <span>
-                                                                            wishlist</span> </a> </li>
+                                  <li><a href="#" @click.prevent="addToLike(product)">
+                                      <i class="flaticon-heart"></i>
+                                      <span>wishlist</span>
+                                  </a> </li>
                                   <li><a href="compare.html"> <i
                                       class="flaticon-left-and-right-arrows"></i>
                                     <span>

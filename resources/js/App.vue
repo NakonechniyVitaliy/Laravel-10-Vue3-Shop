@@ -16,9 +16,10 @@ export default {
 
     created() {
         this.$store.dispatch('getCartProducts');
+        this.$store.dispatch('getLikedCount');
     },
     computed: {
-        ...mapGetters(['total_price', 'cart_products', 'products_count']),
+        ...mapGetters(['total_price', 'cart_products', 'products_count', 'likedCount']),
     },
 
     mounted() {
@@ -35,6 +36,7 @@ export default {
 
         updateCart() {
             localStorage.setItem('cart', JSON.stringify(this.cart_products))
+            this.$store.dispatch('getCartProducts');
         },
 
         getAccessToken(){
@@ -160,7 +162,7 @@ export default {
                                 class="flaticon-user"></i> </a></li>
                             <li class="d-lg-block d-none"><a href="wishlist.html"
                                                              class="number"><i class="flaticon-heart"></i> <span
-                                class="count">(2)</span> </a> </li>
+                                class="count">({{likedCount}})</span> </a> </li>
                             <li class="cartm"> <a href="#0" class="number cart-icon"> <i
                                 class="flaticon-shopping-cart"></i><span
                                 class="count">({{products_count}})</span> </a> </li>
