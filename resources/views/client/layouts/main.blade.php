@@ -16,6 +16,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@300;400;500;600;700&family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
     <!-- FlatIcon Css -->
     <link rel="stylesheet" href="{{ asset('assets/fonts/flaticon.css') }}">
+    <script src="https://kit.fontawesome.com/1c7387186d.js" crossorigin="anonymous"></script>
 
     <!-- Slick Slider Css -->
     <link rel="stylesheet" href="{{ asset('assets/css/plugin/slick.css') }}">
