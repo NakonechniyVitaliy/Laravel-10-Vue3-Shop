@@ -160,9 +160,10 @@ export default {
                           <ul class="main-menu__widge-box d-flex align-items-center ">
                             <li class="d-lg-block d-none"><a href="my-account.html"><i
                                 class="flaticon-user"></i> </a></li>
-                            <li class="d-lg-block d-none"><a href="wishlist.html"
-                                                             class="number"><i class="flaticon-heart"></i> <span
-                                class="count">({{likedCount}})</span> </a> </li>
+                            <li class="d-lg-block d-none">
+                                <router-link class="number" :to="{name: 'liked.index'}">
+                                    <i class="flaticon-heart" ></i> <span
+                                class="count">({{likedCount}})</span> </router-link> </li>
                             <li class="cartm"> <a href="#0" class="number cart-icon"> <i
                                 class="flaticon-shopping-cart"></i><span
                                 class="count">({{products_count}})</span> </a> </li>

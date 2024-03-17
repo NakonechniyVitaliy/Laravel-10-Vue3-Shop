@@ -7,9 +7,14 @@
             let liked = localStorage.getItem('liked')
             let likedCount = 0;
             liked = JSON.parse(liked)
-            liked.forEach(productInLiked =>{
-                likedCount++;
-            })
+            if(liked){
+                liked.forEach(productInLiked =>{
+                    likedCount++;
+                })
+
+            } else {
+                likedCount = 0;
+            }
             commit('setLikedCount', likedCount)
         },
     };

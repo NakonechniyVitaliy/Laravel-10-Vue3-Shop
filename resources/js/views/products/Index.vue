@@ -9,6 +9,7 @@ export default {
     this.getFilteredProductList();
     this.addColor();
     this.addTag();
+    this.getLikedProduct()
   },
 
 
@@ -23,57 +24,37 @@ export default {
       price: [],
       selectedFilter: 'Date, old to new',
       pagination: [],
+      liked_products: []
     }
   },
 
   methods: {
-      addToLike(product){
-        let liked = localStorage.getItem('liked')
-        let newLikedProduct = [{
-            'id': product.id,
-            'title': product.title,
-            'image_url': product.image_url,
-            'price': product.price,
-            }]
-          if (!liked){
-              localStorage.setItem('liked', JSON.stringify(newLikedProduct));
+      getLikedProduct(){
+          this.liked_products = JSON.parse(localStorage.getItem('liked'))
+      },
+      addToLike(product) {
+          let liked = JSON.parse(localStorage.getItem('liked') || '[]');
+          const index = liked.findIndex(item => item.id === product.id);
+
+          if (index === -1) {
+              liked.push({
+                  'id': product.id,
+                  'title': product.title,
+                  'image_url': product.image_url,
+                  'price': product.price,
+              });
           } else {
-              liked = JSON.parse(liked)
-              Array.prototype.push.apply(liked, newLikedProduct)
-              localStorage.setItem('liked', JSON.stringify(liked))
+              liked.splice(index, 1);
           }
+
+          localStorage.setItem('liked', JSON.stringify(liked));
           this.$store.dispatch('getLikedCount');
+          this.getLikedProduct();
       },
 
-      addToCart(product, isSingle){
-        let qty = isSingle ? 1 : $('.qtyValue').val()
-        let cart = localStorage.getItem('cart')
-        $('.qtyValue').val(1)
-        let newProduct = [
-          {
-            'id': product.id,
-            'title': product.title,
-            'image_url': product.image_url,
-            'price': product.price,
-            'qty': qty,
-          }
-        ]
-        if (!cart){
-          localStorage.setItem('cart', JSON.stringify(newProduct));
-        } else {
-          cart = JSON.parse(cart)
-
-          cart.forEach(productInCart =>{
-            if(productInCart.id === product.id ){
-              productInCart.qty = Number(productInCart.qty)+Number(qty)
-              newProduct = null
-            }
-          })
-          Array.prototype.push.apply(cart, newProduct)
-          localStorage.setItem('cart', JSON.stringify(cart))
-          this.$store.dispatch('getCartProducts');
-        }
-      },
+        addToCart(product, isSingle){
+            this.$store.dispatch('addToCart', { product, isSingle });
+        },
 
       onChange() {
         this.axios.post('http://127.0.0.1:8000/api/products', {
@@ -384,10 +365,18 @@ export default {
                               </a>
                               <div class="products-grid__usefull-links">
                                 <ul>
-                                  <li><a href="#" @click.prevent="addToLike(product)">
-                                      <i class="flaticon-heart"></i>
-                                      <span>wishlist</span>
-                                  </a> </li>
+                                  <li v-if="liked_products.some(liked_product => liked_product.id === product.id)">
+                                      <a href="#" @click.prevent="addToLike(product)">
+                                        <i  style="color: darkred !important;" class="fas fa-heart" aria-hidden="true"></i>
+                                        <span>Remove from wishlist</span>
+                                     </a>
+                                  </li>
+                                    <li v-else>
+                                        <a href="#" @click.prevent="addToLike(product)">
+                                            <i v-else class="flaticon-heart"></i>
+                                            <span>Add to wishlist</span>
+                                        </a>
+                                    </li>
                                   <li><a href="compare.html"> <i
                                       class="flaticon-left-and-right-arrows"></i>
                                     <span>
@@ -637,8 +626,9 @@ export default {
                                   <ul>
                                     <li><a href="#popupb" class="popup_link"><i
                                         class="flaticon-eye"></i></a> </li>
-                                    <li><a href="wishlist.html"><i
-                                        class="flaticon-heart"></i></a> </li>
+                                    <li>
+                                        <a href="wishlist.html"><i  class="flaticon-heart"></i></a>
+                                    </li>
                                   </ul>
                                 </div>
                               </div>

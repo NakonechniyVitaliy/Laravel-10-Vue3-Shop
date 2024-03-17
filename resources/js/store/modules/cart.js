@@ -5,6 +5,35 @@ const state = {
 };
 
 const actions = {
+    addToCart({ commit, dispatch } , {product, isSingle}){
+        let qty = isSingle ? 1 : $('.qtyValue').val()
+        let cart = localStorage.getItem('cart')
+        $('.qtyValue').val(1)
+        let newProduct = [
+            {
+                'id': product.id,
+                'title': product.title,
+                'image_url': product.image_url,
+                'price': product.price,
+                'qty': qty,
+            }
+        ]
+        if (!cart){
+            localStorage.setItem('cart', JSON.stringify(newProduct));
+        } else {
+            cart = JSON.parse(cart)
+
+            cart.forEach(productInCart =>{
+                if(productInCart.id === product.id ){
+                    productInCart.qty = Number(productInCart.qty)+Number(qty)
+                    newProduct = null
+                }
+            })
+            Array.prototype.push.apply(cart, newProduct)
+            localStorage.setItem('cart', JSON.stringify(cart))
+            dispatch('getCartProducts');
+        }
+    },
     getCartProducts({ commit }) {
         const cartData = localStorage.getItem('cart');
         if (cartData !== null) {
@@ -22,6 +51,10 @@ const actions = {
 const mutations = {
     setCartProducts(state, cart_products) {
         state.cart_products = cart_products;
+    },
+
+    deleteProduct(state, id) {
+        state.cart_products = state.cart_products.filter(cart_product => cart_product.id !== id);
     },
 };
 
