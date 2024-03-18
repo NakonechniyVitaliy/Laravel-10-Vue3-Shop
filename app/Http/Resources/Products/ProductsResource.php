@@ -31,7 +31,8 @@ class ProductsResource extends JsonResource
             'is_published' =>$this->is_published,
             'category'=>new CategoryResource($this->category),
             'group_products'=>ProductsMinResource::collection($products),
-            'product_images'=>ProductsImagesResource::collection($this->productImages)
+            'product_images'=>ProductsImagesResource::collection($this->productImages),
+            'product_comments'=>CommentResource::collection($this->comments()->get())
         ];
     }
 }
