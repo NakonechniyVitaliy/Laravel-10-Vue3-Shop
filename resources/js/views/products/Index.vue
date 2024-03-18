@@ -373,7 +373,7 @@ export default {
                                   </li>
                                     <li v-else>
                                         <a href="#" @click.prevent="addToLike(product)">
-                                            <i v-else class="flaticon-heart"></i>
+                                            <i class="flaticon-heart"></i>
                                             <span>Add to wishlist</span>
                                         </a>
                                     </li>

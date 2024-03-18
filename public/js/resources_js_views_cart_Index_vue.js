@@ -61,7 +61,8 @@ function _toPrimitive(t, r) { if ("object" != _typeof(t) || !t) return t; var e 
       this.$store.dispatch('deleteProduct', id);
     },
     updateCart: function updateCart() {
-      this.$store.dispatch('updateCart');
+      localStorage.setItem('cart', JSON.stringify(this.cart_products));
+      this.$store.dispatch('getCartProducts');
     }
   }
 });
@@ -208,7 +209,6 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
       "class": "decreaseQty"
     }, [].concat(_hoisted_19), 8 /* PROPS */, _hoisted_17), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
       type: "number",
-      "class": "qtyValue",
       value: product.qty
     }, null, 8 /* PROPS */, _hoisted_20), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", {
       onClick: (0,vue__WEBPACK_IMPORTED_MODULE_0__.withModifiers)(function ($event) {
