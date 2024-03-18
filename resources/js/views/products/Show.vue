@@ -1,4 +1,5 @@
 <script>
+import api from "../../api.js";
 export default {
   mounted() {
     $(document).trigger('changed')
@@ -11,18 +12,19 @@ export default {
       product: [],
       product_img_1: '',
       product_img_2: '',
+      comments: [],
     }
   },
 
   methods: {
     getProduct(id){
-      this.axios.get(`http://127.0.0.1:8000/api/products/${this.$route.params.id}`)
+      api.get(`/api/auth/products/${this.$route.params.id}`)
           .then(res => {
+              console.log(res)
             this.product = res.data.data
-            this.product_img_1 = this.product.product_images[0].url;
-            this.product_img_2 = this.product.product_images[1].url;
-            console.log(this.product_img_1);
-            console.log(this.product);
+            this.comments = res.data.data.product_comments
+            this.product_img_1 = this.product.product_images[0].image_url;
+            this.product_img_2 = this.product.product_images[1].image_url;
           })
           .finally( v =>{
             $(document).trigger('changed')
@@ -144,20 +146,20 @@ export default {
                     <h4>Color: (Sky Blue)</h4>
                     <ul class="varients">
                       <li> <a href="#0" class="shop-details-top-color-sky-img"
-                              data-src="{{ asset('assets/images/shop/products-img1.jpg')}} "> <img
+                              data-src="/assets/images/shop/products-img1.jpg"> <img
                           :src="product.image_url"
                           alt=""> </a> </li>
                       <li> <a href="#0" class="shop-details-top-color-sky-img"
-                              data-src="{{ asset('assets/images/shop/products-img2.jpg')}} "> <img
-                          src="{{ asset('assets/images/shop/shop-details-top-color-sky-img-2.jpg')}} "
+                              data-src="/assets/images/shop/products-img2.jpg"> <img
+                          src="/assets/images/shop/shop-details-top-color-sky-img-2.jpg"
                           alt=""> </a> </li>
                       <li> <a href="#0" class="shop-details-top-color-sky-img"
-                              data-src="{{ asset('assets/images/shop/products-img3.jpg')}} "> <img
-                          src="{{ asset('assets/images/shop/shop-details-top-color-sky-img-3.jpg')}} "
+                              data-src="/assets/images/shop/products-img3.jpg"> <img
+                          src="/assets/images/shop/shop-details-top-color-sky-img-3.jpg"
                           alt=""> </a> </li>
                       <li> <a href="#0" class="shop-details-top-color-sky-img"
-                              data-src="{{ asset('assets/images/shop/products-img4.jpg')}} "> <img
-                          src="{{ asset('assets/images/shop/shop-details-top-color-sky-img-4.jpg')}} "
+                              data-src="/assets/images/shop/products-img4.jpg"> <img
+                          src="/assets/images/shop/shop-details-top-color-sky-img-4.jpg"
                           alt=""> </a> </li>
                     </ul>
                   </div>
@@ -236,32 +238,32 @@ export default {
                     <ul class="shop-details-top-safe-checkout-list">
                       <li>
                         <div class="shop-details-top-safe-checkout-img"> <a href="#0"><img
-                            src="{{ asset('assets/images/shop/shop-details-top-safe-checkout-img-1.jpg')}} "
+                            src="/assets/images/shop/shop-details-top-safe-checkout-img-1.jpg"
                             alt=""></a> </div>
                       </li>
                       <li>
                         <div class="shop-details-top-safe-checkout-img"> <a href="#0"><img
-                            src="{{ asset('assets/images/shop/shop-details-top-safe-checkout-img-2.jpg')}} "
+                            src="/assets/images/shop/shop-details-top-safe-checkout-img-2.jpg"
                             alt=""></a> </div>
                       </li>
                       <li>
                         <div class="shop-details-top-safe-checkout-img"> <a href="#0"><img
-                            src="{{ asset('assets/images/shop/shop-details-top-safe-checkout-img-3.jpg')}} "
+                            src="/assets/images/shop/shop-details-top-safe-checkout-img-3.jpg"
                             alt=""></a> </div>
                       </li>
                       <li>
                         <div class="shop-details-top-safe-checkout-img"> <a href="#0"><img
-                            src="{{ asset('assets/images/shop/shop-details-top-safe-checkout-img-4.jpg')}} "
+                            src="/assets/images/shop/shop-details-top-safe-checkout-img-4.jpg"
                             alt=""></a> </div>
                       </li>
                       <li>
                         <div class="shop-details-top-safe-checkout-img"> <a href="#0"><img
-                            src="{{ asset('assets/images/shop/shop-details-top-safe-checkout-img-5.jpg')}} "
+                            src="/assets/images/shop/shop-details-top-safe-checkout-img-5.jpg"
                             alt=""></a> </div>
                       </li>
                       <li>
                         <div class="shop-details-top-safe-checkout-img"> <a href="#0"><img
-                            src="{{ asset('assets/images/shop/shop-details-top-safe-checkout-img-7.jpg')}} "
+                            src="/assets/images/shop/shop-details-top-safe-checkout-img-7.jpg"
                             alt=""></a> </div>
                       </li>
                     </ul>
@@ -341,7 +343,7 @@ export default {
                   <div class="row align-items-center">
                     <div class="col-lg-4 mt-30 ">
                       <div class="thumb"> <img
-                          src="{{ asset('assets/images/shop/shop-details-tab-content-specification-img-1.jpg')}} "
+                          src="/assets/images/shop/shop-details-tab-content-specification-img-1.jpg"
                           alt=""> </div>
                     </div>
                     <div class="col-lg-8 mt-30">
@@ -521,29 +523,16 @@ export default {
                     <div class="ratting"> <i class="flaticon-star-1"></i> <i
                         class="flaticon-star-1"></i> <i class="flaticon-star-1"></i> <i
                         class="flaticon-star-1"></i> <i class="flaticon-star-1"></i> <span
-                        class="ps-2">BASED ON 100 REVIEW</span> </div>
+                        class="ps-2">BASED ON {{ comments.length }} REVIEW</span> </div>
                   </div>
-                  <div class="review-single">
+                  <div v-for="comment in comments" :key="comment.id" class="review-single">
                     <div class="left">
                       <div class="ratting"> <i class="flaticon-star-1"></i> <i
                           class="flaticon-star-1"></i> <i class="flaticon-star-1"></i> <i
                           class="flaticon-star-1"></i> <i class="flaticon-star-1"></i> </div>
-                      <h6>Vary Good quality Theme <span>Raul Bates on January 28, 2022</span> </h6>
-                      <p> Assertively conceptualize parallel process improvements through user
-                        friendly colighue to action items. Interactively antidos cultivate
-                        interdependent customer service without clicks-and-mortar e-services. </p>
+                      <h6>{{ comment.user_name }}<span>{{ comment.time }}</span> </h6>
+                      <p> {{ comment.message }} </p>
                     </div> <a href="#0" class="right-box"> Report this Comments </a>
-                  </div>
-                  <div class="review-single">
-                    <div class="left">
-                      <div class="ratting"> <i class="flaticon-star-1"></i> <i
-                          class="flaticon-star-1"></i> <i class="flaticon-star-1"></i> <i
-                          class="flaticon-star-1"></i> <i class="flaticon-star-1"></i> </div>
-                      <h6> Amazing Theme <span>Kurt Morgan on January 28, 2022</span> </h6>
-                      <p> Assertively conceptualize parallel process improvements through user
-                        friendly colighue to action items. Interactively antidos cultivate
-                        interdependent customer service without clicks-and-mortar e-services. </p>
-                    </div> <a href="#0" class="right-box">Report this Comments </a>
                   </div>
                   <div class="review-from-box mt-30">
                     <h6>Write a Review</h6>
@@ -609,7 +598,7 @@ export default {
                 <div class="products-grid-one__product-image">
                   <div class="products-grid-one__badge-box"> <span class="bg_base badge new ">New</span>
                   </div> <a href="shop-details-1.html" class="d-block products-grid__image_holder"> <img
-                    src="{{ asset('assets/images/shop/products-img1.jpg')}} " alt="Alt"> </a>
+                    src="/assets/images/shop/products-img1.jpg" alt="Alt"> </a>
                   <div class="products-grid__usefull-links">
                     <ul>
                       <li><a href="wishlist.html"> <i class="flaticon-heart"> </i> <span>
@@ -630,30 +619,30 @@ export default {
                             <div class="popup-product-thumb-box">
                               <ul>
                                 <li class="tab-nav popup-product-thumb"> <a href="#tab7">
-                                  <img src="{{ asset('assets/images/shop/products-img1.jpg')}} "
+                                  <img src="/assets/images/shop/products-img1.jpg"
                                        alt="img"> </a> </li>
                                 <li class="tab-nav popup-product-thumb "> <a href="#tab8">
-                                  <img src="{{ asset('assets/images/shop/products-img2.jpg')}} "
+                                  <img src="/assets/images/shop/products-img2.jpg"
                                        alt="img"> </a> </li>
                                 <li class="tab-nav popup-product-thumb "> <a href="#tab9">
-                                  <img src="{{ asset('assets/images/shop/products-img3.jpg')}} "
+                                  <img src="/assets/images/shop/products-img3.jpg"
                                        alt="img"> </a> </li>
                               </ul>
                             </div>
                             <div class="popup-product-main-image-box">
                               <div id="tab7" class="tab-item popup-product-image">
                                 <div class="popup-product-single-image"> <img
-                                    src="{{ asset('assets/images/shop/products-img1.jpg')}} "
+                                    src="/assets/images/shop/products-img1.jpg"
                                     alt="img"> </div>
                               </div>
                               <div id="tab8" class="tab-item popup-product-image">
                                 <div class="popup-product-single-image"> <img
-                                    src="{{ asset('assets/images/shop/products-img2.jpg')}} "
+                                    src="/assets/images/shop/products-img2.jpg"
                                     alt="img"> </div>
                               </div>
                               <div id="tab9" class="tab-item popup-product-image">
                                 <div class="popup-product-single-image"> <img
-                                    src="{{ asset('assets/images/shop/products-img3.jpg')}} "
+                                    src="/assets/images/shop/products-img3.jpg"
                                     alt="img"> </div>
                               </div> <button class="prev"> <i class="flaticon-back"></i>
                             </button> <button class="next"> <i class="flaticon-next"></i>
@@ -692,11 +681,11 @@ export default {
                             </div>
                           </div>
                           <div class="payment-method"> <a href="#0"> <img
-                              src="{{ asset('assets/images/payment_method/method_1.png')}} " alt=""> </a>
-                            <a href="#0"> <img src="{{ asset('assets/images/payment_method/method_2.png')}} "
+                              src="/assets/images/payment_method/method_1.png" alt=""> </a>
+                            <a href="#0"> <img src="/assets/images/payment_method/method_2.png"
                                                alt=""> </a> <a href="#0"> <img
-                                src="{{ asset('assets/images/payment_method/method_3.png')}} " alt=""> </a>
-                            <a href="#0"> <img src="{{ asset('assets/images/payment_method/method_4.png')}} "
+                                src="/assets/images/payment_method/method_3.png" alt=""> </a>
+                            <a href="#0"> <img src="/assets/images/payment_method/method_4.png"
                                                alt=""> </a> </div>
                         </div>
                       </div>
@@ -721,8 +710,8 @@ export default {
                       class="bg_black badge discount">-20%</span> </div> <a href="shop-details-1.html"
                                                                             class="d-block products-grid__image_holder"> <img
                     class="products-grid-one__mainimage products-grid-one__first-img"
-                    src="{{ asset('assets/images/shop/products-img3.jpg')}} " alt="Alt"> <img
-                    class="products-grid-one__hover-img" src="{{ asset('assets/images/shop/products-img4.jpg')}} "
+                    src="/assets/images/shop/products-img3.jpg" alt="Alt"> <img
+                    class="products-grid-one__hover-img" src="/assets/images/shop/products-img4.jpg"
                     alt="Alt"> </a>
                   <div class="products-grid__usefull-links">
                     <ul>
@@ -744,30 +733,30 @@ export default {
                             <div class="popup-product-thumb-box">
                               <ul>
                                 <li class="tab-nav popup-product-thumb "> <a href="#tab777">
-                                  <img src="{{ asset('assets/images/shop/products-img3.jpg')}} "
+                                  <img src="/assets/images/shop/products-img3.jpg"
                                        alt="img"> </a> </li>
                                 <li class="tab-nav popup-product-thumb "> <a href="#tab888">
-                                  <img src="{{ asset('assets/images/shop/products-img4.jpg')}} "
+                                  <img src="/assets/images/shop/products-img4.jpg"
                                        alt="img"> </a> </li>
                                 <li class="tab-nav popup-product-thumb "> <a href="#tab999">
-                                  <img src="{{ asset('assets/images/shop/products-img5.jpg')}} "
+                                  <img src="/assets/images/shop/products-img5.jpg"
                                        alt="img"> </a> </li>
                               </ul>
                             </div>
                             <div class="popup-product-main-image-box">
                               <div id="tab777" class="tab-item popup-product-image">
                                 <div class="popup-product-single-image"> <img
-                                    src="{{ asset('assets/images/shop/products-img3.jpg')}} "
+                                    src="/assets/images/shop/products-img3.jpg"
                                     alt="img"> </div>
                               </div>
                               <div id="tab888" class="tab-item popup-product-image">
                                 <div class="popup-product-single-image"> <img
-                                    src="{{ asset('assets/images/shop/products-img5.jpg')}} "
+                                    src="/assets/images/shop/products-img5.jpg"
                                     alt="img"> </div>
                               </div>
                               <div id="tab999" class="tab-item popup-product-image">
                                 <div class="popup-product-single-image"> <img
-                                    src="{{ asset('assets/images/shop/products-img6.jpg')}} "
+                                    src="/assets/images/shop/products-img6.jpg"
                                     alt="img"> </div>
                               </div> <button class="prev"> <i class="flaticon-back"></i>
                             </button> <button class="next"> <i class="flaticon-next"></i>
@@ -806,11 +795,11 @@ export default {
                             </div>
                           </div>
                           <div class="payment-method"> <a href="#0"> <img
-                              src="{{ asset('assets/images/payment_method/method_1.png')}} " alt=""> </a>
-                            <a href="#0"> <img src="{{ asset('assets/images/payment_method/method_2.png')}} "
+                              src="/assets/images/payment_method/method_1.png" alt=""> </a>
+                            <a href="#0"> <img src="/assets/images/payment_method/method_2.png"
                                                alt=""> </a> <a href="#0"> <img
-                                src="{{ asset('assets/images/payment_method/method_3.png')}} " alt=""> </a>
-                            <a href="#0"> <img src="{{ asset('assets/images/payment_method/method_4.png')}} "
+                                src="/assets/images/payment_method/method_3.png" alt=""> </a>
+                            <a href="#0"> <img src="/assets/images/payment_method/method_4.png"
                                                alt=""> </a> </div>
                         </div>
                       </div>
@@ -830,11 +819,11 @@ export default {
                 </div>
                 <div class="products-grid-one__thumb-box">
                   <p class="products-grid-one__product-varient"> <span class="color"> Yellow </span> <img
-                      src="{{ asset('assets/images/shop/products-img3.jpg')}} " alt="Alt"> </p>
+                      src="/assets/images/shop/products-img3.jpg" alt="Alt"> </p>
                   <p class="products-grid-one__product-varient"> <span class="color"> blue </span> <img
-                      src="{{ asset('assets/images/shop/products-img4.jpg')}} " alt="Alt"> </p>
+                      src="/assets/images/shop/products-img4.jpg" alt="Alt"> </p>
                   <p class="products-grid-one__product-varient"> <span class="color"> Black </span> <img
-                      src="{{ asset('assets/images/shop/products-img5.jpg')}} " alt="Alt"> </p>
+                      src="/assets/images/shop/products-img5.jpg" alt="Alt"> </p>
                 </div>
               </div>
               <div class="products-grid-one">
@@ -843,8 +832,8 @@ export default {
                     <span class="bg_black badge discount">-30%</span> </div> <a
                     href="shop-details-1.html" class="d-block products-grid__image_holder"> <img
                     class="products-grid-one__mainimage products-grid-one__first-img"
-                    src="{{ asset('assets/images/shop/products-img4.jpg')}} " alt="Alt"> <img
-                    class="products-grid-one__hover-img" src="{{ asset('assets/images/shop/products-img5.jpg')}} "
+                    src="/assets/images/shop/products-img4.jpg" alt="Alt"> <img
+                    class="products-grid-one__hover-img" src="/assets/images/shop/products-img5.jpg"
                     alt="Alt"> </a>
                   <div class="products-grid__usefull-links">
                     <ul>
@@ -866,32 +855,32 @@ export default {
                             <div class="popup-product-thumb-box">
                               <ul>
                                 <li class="tab-nav popup-product-thumb"> <a href="#tab7777">
-                                  <img src="{{ asset('assets/images/shop/products-img4.jpg')}} "
+                                  <img src="/assets/images/shop/products-img4.jpg"
                                        alt="img"> </a> </li>
                                 <li class="tab-nav popup-product-thumb "> <a
                                     href="#tab8888"> <img
-                                    src="{{ asset('assets/images/shop/products-img5.jpg')}} "
+                                    src="/assets/images/shop/products-img5.jpg"
                                     alt="img"> </a> </li>
                                 <li class="tab-nav popup-product-thumb "> <a
                                     href="#tab9999"> <img
-                                    src="{{ asset('assets/images/shop/products-img6.jpg')}} "
+                                    src="/assets/images/shop/products-img6.jpg"
                                     alt="img"> </a> </li>
                               </ul>
                             </div>
                             <div class="popup-product-main-image-box">
                               <div id="tab7777" class="tab-item popup-product-image">
                                 <div class="popup-product-single-image"> <img
-                                    src="{{ asset('assets/images/shop/products-img4.jpg')}} "
+                                    src="/assets/images/shop/products-img4.jpg"
                                     alt="img"> </div>
                               </div>
                               <div id="tab8888" class="tab-item popup-product-image">
                                 <div class="popup-product-single-image"> <img
-                                    src="{{ asset('assets/images/shop/products-img5.jpg')}} "
+                                    src="/assets/images/shop/products-img5.jpg"
                                     alt="img"> </div>
                               </div>
                               <div id="tab9999" class="tab-item popup-product-image">
                                 <div class="popup-product-single-image"> <img
-                                    src="{{ asset('assets/images/shop/products-img6.jpg')}} "
+                                    src="/assets/images/shop/products-img6.jpg"
                                     alt="img"> </div>
                               </div> <button class="prev"> <i class="flaticon-back"></i>
                             </button> <button class="next"> <i class="flaticon-next"></i>
@@ -930,11 +919,11 @@ export default {
                             </div>
                           </div>
                           <div class="payment-method"> <a href="#0"> <img
-                              src="{{ asset('assets/images/payment_method/method_1.png')}} " alt=""> </a>
-                            <a href="#0"> <img src="{{ asset('assets/images/payment_method/method_2.png')}} "
+                              src="/assets/images/payment_method/method_1.png" alt=""> </a>
+                            <a href="#0"> <img src="/assets/images/payment_method/method_2.png"
                                                alt=""> </a> <a href="#0"> <img
-                                src="{{ asset('assets/images/payment_method/method_3.png')}} " alt=""> </a>
-                            <a href="#0"> <img src="{{ asset('assets/images/payment_method/method_4.png')}} "
+                                src="/assets/images/payment_method/method_3.png" alt=""> </a>
+                            <a href="#0"> <img src="/assets/images/payment_method/method_4.png"
                                                alt=""> </a> </div>
                         </div>
                       </div>
@@ -955,9 +944,9 @@ export default {
                 </div>
                 <div class="products-grid-one__thumb-box">
                   <p class="products-grid-one__product-varient"> <span class="color"> Yellow </span> <img
-                      src="{{ asset('assets/images/shop/products-img4.jpg')}} " alt="Alt"> </p>
+                      src="/assets/images/shop/products-img4.jpg" alt="Alt"> </p>
                   <p class="products-grid-one__product-varient"> <span class="color"> blue </span> <img
-                      src="{{ asset('assets/images/shop/products-img5.jpg')}} " alt="Alt"> </p>
+                      src="/assets/images/shop/products-img5.jpg" alt="Alt"> </p>
                 </div>
               </div>
               <div class="products-grid-one">
@@ -965,7 +954,7 @@ export default {
                   <div class="products-grid-one__badge-box"> <span class="bg_base badge new ">New</span>
                   </div> <a href="shop-details-1.html" class="d-block products-grid__image_holder"> <img
                     class="products-grid-one__hover-img now-main"
-                    src="{{ asset('assets/images/shop/products-img6.jpg')}} " alt="Alt"> </a>
+                    src="/assets/images/shop/products-img6.jpg" alt="Alt"> </a>
                   <div class="products-grid__usefull-links">
                     <ul>
                       <li><a href="wishlist.html"> <i class="flaticon-heart"> </i> <span>
@@ -987,32 +976,32 @@ export default {
                               <ul>
                                 <li class="tab-nav popup-product-thumb"> <a
                                     href="#tab77777"> <img
-                                    src="{{ asset('assets/images/shop/products-img5.jpg')}} "
+                                    src="/assets/images/shop/products-img5.jpg"
                                     alt="img"> </a> </li>
                                 <li class="tab-nav popup-product-thumb "> <a
                                     href="#tab88888"> <img
-                                    src="{{ asset('assets/images/shop/products-img6.jpg')}} "
+                                    src="/assets/images/shop/products-img6.jpg"
                                     alt="img"> </a> </li>
                                 <li class="tab-nav popup-product-thumb "> <a
                                     href="#tab99999"> <img
-                                    src="{{ asset('assets/images/shop/products-img7.jpg')}} "
+                                    src="/assets/images/shop/products-img7.jpg"
                                     alt="img"> </a> </li>
                               </ul>
                             </div>
                             <div class="popup-product-main-image-box">
                               <div id="tab77777" class="tab-item popup-product-image">
                                 <div class="popup-product-single-image"> <img
-                                    src="{{ asset('assets/images/shop/products-img5.jpg')}} "
+                                    src="/assets/images/shop/products-img5.jpg"
                                     alt="img"> </div>
                               </div>
                               <div id="tab88888" class="tab-item popup-product-image">
                                 <div class="popup-product-single-image"> <img
-                                    src="{{ asset('assets/images/shop/products-img6.jpg')}} "
+                                    src="/assets/images/shop/products-img6.jpg"
                                     alt="img"> </div>
                               </div>
                               <div id="tab99999" class="tab-item popup-product-image">
                                 <div class="popup-product-single-image"> <img
-                                    src="{{ asset('assets/images/shop/products-img7.jpg')}} "
+                                    src="/assets/images/shop/products-img7.jpg"
                                     alt="img"> </div>
                               </div> <button class="prev"> <i class="flaticon-back"></i>
                             </button> <button class="next"> <i class="flaticon-next"></i>
@@ -1051,11 +1040,11 @@ export default {
                             </div>
                           </div>
                           <div class="payment-method"> <a href="#0"> <img
-                              src="{{ asset('assets/images/payment_method/method_1.png')}} " alt=""> </a>
-                            <a href="#0"> <img src="{{ asset('assets/images/payment_method/method_2.png')}} "
+                              src="/assets/images/payment_method/method_1.png" alt=""> </a>
+                            <a href="#0"> <img src="/assets/images/payment_method/method_2.png"
                                                alt=""> </a> <a href="#0"> <img
-                                src="{{ asset('assets/images/payment_method/method_3.png')}} " alt=""> </a>
-                            <a href="#0"> <img src="{{ asset('assets/images/payment_method/method_4.png')}} "
+                                src="/assets/images/payment_method/method_3.png" alt=""> </a>
+                            <a href="#0"> <img src="/assets/images/payment_method/method_4.png"
                                                alt=""> </a> </div>
                         </div>
                       </div>
@@ -1075,9 +1064,9 @@ export default {
                 </div>
                 <div class="products-grid-one__thumb-box">
                   <p class="products-grid-one__product-varient"> <span class="color"> blue </span> <img
-                      src="{{ asset('assets/images/shop/products-img6.jpg')}} " alt="Alt"> </p>
+                      src="/assets/images/shop/products-img6.jpg" alt="Alt"> </p>
                   <p class="products-grid-one__product-varient"> <span class="color"> Yellow </span> <img
-                      src="{{ asset('assets/images/shop/products-img5.jpg')}} " alt="Alt"> </p>
+                      src="/assets/images/shop/products-img5.jpg" alt="Alt"> </p>
                 </div>
               </div>
               <div class="products-grid-one">
@@ -1085,8 +1074,8 @@ export default {
                   <div class="products-grid-one__badge-box"> <span class="bg_base badge new ">New</span>
                   </div> <a href="shop-details-1.html" class="d-block products-grid__image_holder"> <img
                     class="products-grid-one__mainimage products-grid-one__first-img"
-                    src="{{ asset('assets/images/shop/products-img6.jpg')}} " alt="Alt"> <img
-                    class="products-grid-one__hover-img" src="{{ asset('assets/images/shop/products-img2.jpg')}} "
+                    src="/assets/images/shop/products-img6.jpg" alt="Alt"> <img
+                    class="products-grid-one__hover-img" src="/assets/images/shop/products-img2.jpg"
                     alt="Alt"> </a>
                   <div class="products-grid__usefull-links">
                     <ul>
@@ -1108,30 +1097,30 @@ export default {
                             <div class="popup-product-thumb-box">
                               <ul>
                                 <li class="tab-nav popup-product-thumb"> <a href="#stab1">
-                                  <img src="{{ asset('assets/images/shop/products-img1.jpg')}} "
+                                  <img src="/assets/images/shop/products-img1.jpg"
                                        alt="img"> </a> </li>
                                 <li class="tab-nav popup-product-thumb "> <a href="#stab2">
-                                  <img src="{{ asset('assets/images/shop/products-img2.jpg')}} "
+                                  <img src="/assets/images/shop/products-img2.jpg"
                                        alt="img"> </a> </li>
                                 <li class="tab-nav popup-product-thumb "> <a href="#stab3">
-                                  <img src="{{ asset('assets/images/shop/products-img3.jpg')}} "
+                                  <img src="/assets/images/shop/products-img3.jpg"
                                        alt="img"> </a> </li>
                               </ul>
                             </div>
                             <div class="popup-product-main-image-box">
                               <div id="stab1" class="tab-item popup-product-image">
                                 <div class="popup-product-single-image"> <img
-                                    src="{{ asset('assets/images/shop/products-img1.jpg')}} "
+                                    src="/assets/images/shop/products-img1.jpg"
                                     alt="img"> </div>
                               </div>
                               <div id="stab2" class="tab-item popup-product-image">
                                 <div class="popup-product-single-image"> <img
-                                    src="{{ asset('assets/images/shop/products-img2.jpg')}} "
+                                    src="/assets/images/shop/products-img2.jpg"
                                     alt="img"> </div>
                               </div>
                               <div id="stab3" class="tab-item popup-product-image">
                                 <div class="popup-product-single-image"> <img
-                                    src="{{ asset('assets/images/shop/products-img3.jpg')}} "
+                                    src="/assets/images/shop/products-img3.jpg"
                                     alt="img"> </div>
                               </div> <button class="prev"> <i class="flaticon-back"></i>
                             </button> <button class="next"> <i class="flaticon-next"></i>
@@ -1170,11 +1159,11 @@ export default {
                             </div>
                           </div>
                           <div class="payment-method"> <a href="#0"> <img
-                              src="{{ asset('assets/images/payment_method/method_1.png')}} " alt=""> </a>
-                            <a href="#0"> <img src="{{ asset('assets/images/payment_method/method_2.png')}} "
+                              src="/assets/images/payment_method/method_1.png" alt=""> </a>
+                            <a href="#0"> <img src="/assets/images/payment_method/method_2.png"
                                                alt=""> </a> <a href="#0"> <img
-                                src="{{ asset('assets/images/payment_method/method_3.png')}} " alt=""> </a>
-                            <a href="#0"> <img src="{{ asset('assets/images/payment_method/method_4.png')}} "
+                                src="/assets/images/payment_method/method_3.png" alt=""> </a>
+                            <a href="#0"> <img src="/assets/images/payment_method/method_4.png"
                                                alt=""> </a> </div>
                         </div>
                       </div>
@@ -1194,19 +1183,19 @@ export default {
                 </div>
                 <div class="products-grid-one__thumb-box">
                   <p class="products-grid-one__product-varient"> <span class="color"> Blue </span> <img
-                      src="{{ asset('assets/images/shop/products-img6.jpg')}} " alt="Alt"> </p>
+                      src="/assets/images/shop/products-img6.jpg" alt="Alt"> </p>
                   <p class="products-grid-one__product-varient"> <span class="color"> Yellow </span> <img
-                      src="{{ asset('assets/images/shop/products-img7.jpg')}} " alt="Alt"> </p>
+                      src="/assets/images/shop/products-img7.jpg" alt="Alt"> </p>
                   <p class="products-grid-one__product-varient"> <span class="color"> green </span> <img
-                      src="{{ asset('assets/images/shop/products-img8.jpg')}} " alt="Alt"> </p>
+                      src="/assets/images/shop/products-img8.jpg" alt="Alt"> </p>
                 </div>
               </div>
               <div class="products-grid-one">
                 <div class="products-grid-one__product-image"> <a href="shop-details-1.html"
                                                                   class="d-block products-grid__image_holder"> <img
                     class="products-grid-one__mainimage products-grid-one__first-img"
-                    src="{{ asset('assets/images/shop/products-img12.jpg')}} " alt="Alt"> <img
-                    class="products-grid-one__hover-img" src="{{ asset('assets/images/shop/products-img11.jpg')}} "
+                    src="/assets/images/shop/products-img12.jpg" alt="Alt"> <img
+                    class="products-grid-one__hover-img" src="/assets/images/shop/products-img11.jpg"
                     alt="Alt"> </a>
                   <div class="products-grid__usefull-links">
                     <ul>
@@ -1228,32 +1217,32 @@ export default {
                             <div class="popup-product-thumb-box">
                               <ul>
                                 <li class="tab-nav popup-product-thumb"> <a href="#ttab111">
-                                  <img src="{{ asset('assets/images/shop/products-img9.jpg')}} "
+                                  <img src="/assets/images/shop/products-img9.jpg"
                                        alt="img"> </a> </li>
                                 <li class="tab-nav popup-product-thumb "> <a
                                     href="#ttab222"> <img
-                                    src="{{ asset('assets/images/shop/products-img10.jpg')}} "
+                                    src="/assets/images/shop/products-img10.jpg"
                                     alt="img"> </a> </li>
                                 <li class="tab-nav popup-product-thumb "> <a
                                     href="#ttab333"> <img
-                                    src="{{ asset('assets/images/shop/products-img11.jpg')}} "
+                                    src="/assets/images/shop/products-img11.jpg"
                                     alt="img"> </a> </li>
                               </ul>
                             </div>
                             <div class="popup-product-main-image-box">
                               <div id="ttab111" class="tab-item popup-product-image">
                                 <div class="popup-product-single-image"> <img
-                                    src="{{ asset('assets/images/shop/products-img9.jpg')}} "
+                                    src="/assets/images/shop/products-img9.jpg"
                                     alt="img"> </div>
                               </div>
                               <div id="ttab222" class="tab-item popup-product-image">
                                 <div class="popup-product-single-image"> <img
-                                    src="{{ asset('assets/images/shop/products-img10.jpg')}} "
+                                    src="/assets/images/shop/products-img10.jpg"
                                     alt="img"> </div>
                               </div>
                               <div id="ttab333" class="tab-item popup-product-image">
                                 <div class="popup-product-single-image"> <img
-                                    src="{{ asset('assets/images/shop/products-img11.jpg')}} "
+                                    src="/assets/images/shop/products-img11.jpg"
                                     alt="img"> </div>
                               </div> <button class="prev"> <i class="flaticon-back"></i>
                             </button> <button class="next"> <i class="flaticon-next"></i>
@@ -1292,11 +1281,11 @@ export default {
                             </div>
                           </div>
                           <div class="payment-method"> <a href="#0"> <img
-                              src="{{ asset('assets/images/payment_method/method_1.png')}} " alt=""> </a>
-                            <a href="#0"> <img src="{{ asset('assets/images/payment_method/method_2.png')}} "
+                              src="/assets/images/payment_method/method_1.png" alt=""> </a>
+                            <a href="#0"> <img src="/assets/images/payment_method/method_2.png"
                                                alt=""> </a> <a href="#0"> <img
-                                src="{{ asset('assets/images/payment_method/method_3.png')}} " alt=""> </a>
-                            <a href="#0"> <img src="{{ asset('assets/images/payment_method/method_4.png')}} "
+                                src="/assets/images/payment_method/method_3.png" alt=""> </a>
+                            <a href="#0"> <img src="/assets/images/payment_method/method_4.png"
                                                alt=""> </a> </div>
                         </div>
                       </div>
@@ -1316,11 +1305,11 @@ export default {
                 </div>
                 <div class="products-grid-one__thumb-box">
                   <p class="products-grid-one__product-varient"> <span class="color"> Blue </span> <img
-                      src="{{ asset('assets/images/shop/products-img12.jpg')}} " alt="Alt"> </p>
+                      src="/assets/images/shop/products-img12.jpg" alt="Alt"> </p>
                   <p class="products-grid-one__product-varient"> <span class="color"> Green </span> <img
-                      src="{{ asset('assets/images/shop/products-img11.jpg')}} " alt="Alt"> </p>
+                      src="/assets/images/shop/products-img11.jpg" alt="Alt"> </p>
                   <p class="products-grid-one__product-varient"> <span class="color"> Black </span> <img
-                      src="{{ asset('assets/images/shop/products-img10.jpg')}} " alt="Alt"> </p>
+                      src="/assets/images/shop/products-img10.jpg" alt="Alt"> </p>
                 </div>
               </div>
             </div>
