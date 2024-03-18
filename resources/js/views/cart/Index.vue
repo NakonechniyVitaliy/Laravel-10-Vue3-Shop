@@ -6,10 +6,10 @@ export default {
         this.$store.dispatch('getCartProducts');
     },
     computed: {
-        ...mapGetters(['total_price', 'cart_products'])
+        ...mapGetters(['total_price', 'cart_products']),
     },
   mounted() {
-    $(document).trigger('changed')
+    $(document).trigger('changed');
   },
 
   data() {
@@ -48,7 +48,8 @@ export default {
           this.$store.dispatch('deleteProduct', id);
       },
       updateCart() {
-          this.$store.dispatch('updateCart');
+          localStorage.setItem('cart', JSON.stringify(this.cart_products))
+          this.$store.dispatch('getCartProducts');
       },
   }
 }
@@ -107,7 +108,7 @@ export default {
                       <td class="qty">
                         <div class="qtySelector text-center">
                           <span @click.prevent='minusQty(product)' class="decreaseQty"><i class="flaticon-minus"></i> </span>
-                          <input type="number" class="qtyValue" :value=" product.qty " />
+                          <input type="number"  :value="product.qty">
                           <span @click.prevent='plusQty(product)' class="increaseQty"> <i class="flaticon-plus"></i> </span>
                         </div>
                       </td>
