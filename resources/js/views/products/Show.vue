@@ -13,10 +13,20 @@ export default {
       product_img_1: '',
       product_img_2: '',
       comments: [],
+      message: null
     }
   },
 
   methods: {
+      sendReview(){
+        api.post('/api/auth/products/review',{
+            message: this.message,
+            product_id: this.product.id,
+        }).then(res => {
+                console.log(res);
+            });
+      },
+
     getProduct(id){
       api.get(`/api/auth/products/${this.$route.params.id}`)
           .then(res => {
@@ -547,32 +557,11 @@ export default {
                             </div>
                           </div>
                         </div>
-                        <div class="col-lg-6">
-                          <div class="form-group"> <label for="name">NAME</label> <input
-                              type="text" id="name" class="form-control"
-                              placeholder="David Warner"> </div>
-                        </div>
-                        <div class="col-lg-6">
-                          <div class="form-group"> <label for="number">Number</label> <input
-                              type="text" id="number" class="form-control"
-                              placeholder="Phone Number"> </div>
-                        </div>
-                        <div class="col-lg-6">
-                          <div class="form-group"> <label for="email"> Email </label> <input
-                              type="text" id="email" class="form-control"
-                              placeholder="support@gmail.com"> </div>
-                        </div>
-                        <div class="col-lg-6">
-                          <div class="form-group"> <label for="namee"> REVIEW TITLE</label> <input
-                              type="text" id="namee" class="form-control"
-                              placeholder="Give your review title"> </div>
-                        </div>
                         <div class="col-12">
                           <div class="form-group m-0"> <label for="email">BODY OF REVIEW (1500)
-                          </label> <textarea
-                              placeholder="Write Your Comments Here"></textarea> </div>
+                          </label> <textarea v-model='message' placeholder="Write Your Comments Here"></textarea> </div>
                         </div>
-                      </div> <button type="submit" class="btn--primary style2 ">Submit Review
+                      </div> <button @click.prevent="sendReview()" type="submit" class="btn--primary style2 ">Submit Review
                     </button>
                     </form>
                   </div>

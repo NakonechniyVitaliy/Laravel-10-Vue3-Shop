@@ -42,6 +42,7 @@ Route::group(['middleware' => 'api', 'prefix' => 'auth'], function ($router) {
             Route::post('/', [IndexController::class, '__invoke']);
             Route::get('/filters', [FilterListController::class, '__invoke']);
             Route::get('/{product}', [ShowController::class, '__invoke']);
+            Route::post('/review', [\App\Http\Controllers\API\Product\StoreController::class, '__invoke']);
         });
     });
 });
