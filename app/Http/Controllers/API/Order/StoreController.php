@@ -15,6 +15,7 @@ class StoreController extends BaseController
     public function __invoke(StoreRequest $request)
     {
         $data = $request->validated();
+        $data['user_id'] = auth()->user()->id;
         $order = $this->service->store($data);
 
         return new OrderResource($order);

@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources\Products;
 
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -19,7 +20,7 @@ class CommentResource extends JsonResource
             'user_id' => $this->user_id,
             'product_id' => $this->product,
             'message' => $this->message,
-            'time' => $this->created_at->diffForHumans(),
+            'time' => Carbon::parse($this->created_at)->format('d F Y'),
             'user_name'=>$this->user->name,
         ];
     }

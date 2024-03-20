@@ -1,6 +1,6 @@
 <script>
 import {mapGetters} from "vuex";
-
+import api from "../../api.js";
 export default {
     created() {
         this.$store.dispatch('getCartProducts');
@@ -14,16 +14,12 @@ export default {
 
   data() {
     return {
-      name: '',
-      email: '',
       address: '',
     }
   },
   methods: {
       order() {
-          this.axios.post('http://127.0.0.1:8000/api/orders', {
-              'name': this.name,
-              'email': this.email,
+          api.post('/api/auth/orders', {
               'total_price': this.total_price,
               'products': this.cart_products,
               'address': this.address,
@@ -227,12 +223,6 @@ export default {
                   </li>
                 </ul>
                   <div class="apply-coupon wow fadeInUp animated">
-                      <div class="apply-coupon-input-box mt-30 ">
-                          <input v-model="name" type="text" name="name" value="" placeholder="Name">
-                      </div>
-                      <div class="apply-coupon-input-box mt-30 ">
-                          <input v-model="email" type="email" name="email" value="" placeholder="Email">
-                      </div>
                       <div class="apply-coupon-input-box mt-30 ">
                           <input v-model="address" type="text" name="address" value="" placeholder="Address">
                       </div>

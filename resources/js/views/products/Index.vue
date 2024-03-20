@@ -365,7 +365,7 @@ export default {
                               </a>
                               <div class="products-grid__usefull-links">
                                 <ul>
-                                  <li v-if="liked_products.some(liked_product => liked_product.id === product.id)">
+                                  <li v-if="liked_products && liked_products.some(liked_product => liked_product.id === product.id)">
                                       <a href="#" @click.prevent="addToLike(product)">
                                         <i  style="color: darkred !important;" class="fas fa-heart" aria-hidden="true"></i>
                                         <span>Remove from wishlist</span>
