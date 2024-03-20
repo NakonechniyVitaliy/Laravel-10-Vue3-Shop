@@ -15,7 +15,7 @@ class StoreController extends BaseController
         $data = $request->validated();
         $data['user_id'] = auth()->user()->id;
         Comment::create($data);
-        return 'aboba true';
+        return 'True';
 
     }
 }

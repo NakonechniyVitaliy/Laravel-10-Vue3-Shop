@@ -10,7 +10,9 @@ export default {
     },
     methods:{
       getLikedProduct(){
-          this.liked_products = JSON.parse(localStorage.getItem('liked'))
+          if (localStorage.getItem('liked')){
+              this.liked_products = JSON.parse(localStorage.getItem('liked'))
+          }
       },
 
         deleteFromLiked(liked_product){

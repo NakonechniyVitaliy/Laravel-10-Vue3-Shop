@@ -770,7 +770,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
       }, ["prevent"]),
       href: "cart.html",
       "class": "addcart btn--primary style2"
-    }, " Add To Cart ", 8 /* PROPS */, _hoisted_60), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_61, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("ul", null, [$data.liked_products.some(function (liked_product) {
+    }, " Add To Cart ", 8 /* PROPS */, _hoisted_60), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_61, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("ul", null, [$data.liked_products && $data.liked_products.some(function (liked_product) {
       return liked_product.id === product.id;
     }) ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("li", _hoisted_62, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("a", {
       href: "#",

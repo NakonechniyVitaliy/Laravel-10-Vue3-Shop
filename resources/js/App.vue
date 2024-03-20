@@ -102,6 +102,7 @@ export default {
                 <ul class="page-dropdown-menu">
                   <li class="dropdown-list"> <router-link to="/"> <span>Home </span></router-link></li>
                   <li class="dropdown-list"> <router-link to="/products"> <span>Products </span></router-link></li>
+                  <li class="dropdown-list"> <router-link to="/personal"> <span>Personal </span></router-link></li>
                 </ul>
               </div>
             </div>
@@ -150,8 +151,9 @@ export default {
                       <div class=" d-flex align-items-center justify-content-between ">
                         <nav>
                           <ul class="page-dropdown-menu d-flex align-items-center justify-content-center">
-                            <li class="dropdown-list"> <router-link to="/"> <span>Home</span></router-link></li>
+                            <li class="dropdown-list"> <router-link to="/"> <span>Home </span></router-link></li>
                             <li class="dropdown-list"> <router-link to="/products"> <span>Products </span></router-link></li>
+                            <li class="dropdown-list"> <router-link to="/personal"> <span>Personal </span></router-link></li>
                           </ul>
                         </nav>
 
@@ -210,6 +212,7 @@ export default {
                     <ul class="page-dropdown-menu d-flex align-items-center justify-content-center">
                       <li class="dropdown-list"> <router-link to="/"> <span>Home</span></router-link></li>
                       <li class="dropdown-list"> <router-link to="/products"> <span>Products </span></router-link></li>
+                      <li class="dropdown-list"> <router-link to="/personal"> <span>Personal </span></router-link></li>
                     </ul>
                   </nav>
 

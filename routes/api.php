@@ -24,9 +24,6 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 
-Route::post('/orders', \App\Http\Controllers\API\Order\StoreController::class);
-
-
 Route::group(['namespace' => 'API/User', 'prefix' => 'users'], function (){
     Route::post('/', [StoreController::class, '__invoke']);
 });
@@ -44,5 +41,7 @@ Route::group(['middleware' => 'api', 'prefix' => 'auth'], function ($router) {
             Route::get('/{product}', [ShowController::class, '__invoke']);
             Route::post('/review', [\App\Http\Controllers\API\Product\StoreController::class, '__invoke']);
         });
+        Route::post('/orders', [\App\Http\Controllers\API\Order\StoreController::class, '__invoke']);
+        Route::get('/personal', [\App\Http\Controllers\API\Personal\IndexController::class, '__invoke']);
     });
 });

@@ -39,6 +39,11 @@ const router = createRouter({
       component: () => import('../views/liked/index.vue')
     },
     {
+      path: '/personal',
+      name: 'personal.index',
+      component: () => import('../views/personal/index.vue')
+    },
+    {
         path: '/:catchAll(.*)',
       name: '404',
       component: () => import('../views/error/Error404.vue')

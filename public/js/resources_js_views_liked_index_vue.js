@@ -22,7 +22,9 @@ __webpack_require__.r(__webpack_exports__);
   },
   methods: {
     getLikedProduct: function getLikedProduct() {
-      this.liked_products = JSON.parse(localStorage.getItem('liked'));
+      if (localStorage.getItem('liked')) {
+        this.liked_products = JSON.parse(localStorage.getItem('liked'));
+      }
     },
     deleteFromLiked: function deleteFromLiked(liked_product) {
       console.log('Deleting');
